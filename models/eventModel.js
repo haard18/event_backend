@@ -45,7 +45,7 @@ const eventSchema = new Schema({
         ref: 'user',
         required: true
     },
-    attendees: [attendeeSchema],  
+    attendees: { type: [attendeeSchema], default: [] },
     nfcUUID: {
         type: String,
         required: true
@@ -54,7 +54,7 @@ const eventSchema = new Schema({
         type: Boolean,
         default: false
     },
-    poapURL:{
+    poapURL: {
         type: String,
         default: ''
     }
