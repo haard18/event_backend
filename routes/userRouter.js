@@ -43,6 +43,46 @@ userRouter.post('/login',async(req,res)=>{
         
     }
 })
-
-
+userRouter.get('/getMyProfile',async(req,res)=>{
+    try {
+        const token=req.header('auth-token');
+        if(!token){
+            return res.status(401).json({message:"Unauthorized"});
+        }
+        const {id}=jwt.verify(token,process.env.JWT_SECRET);
+        const user=await userModel.findById(id);
+        res.json(user);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message:"Internal server error"});
+    }
+})
+userRouter.get('/getAttendingEvents',async(req,res)=>{
+    try {
+        const token=req.header('auth-token');
+        if(!token){
+            return res.status(401).json({message:"Unauthorized"});
+        }
+        const {id}=jwt.verify(token,process.env.JWT_SECRET);
+        const user=await userModel.findById(id).populate('events_attended' ,'-attendees -v -_id ');
+        res.json(user.events_attended);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message:"Internal server error"});
+    }
+})
+userRouter.get('/getMyEvents',async(req,res)=>{
+    try {
+        const token=req.header('auth-token');
+        if(!token){
+            return res.status(401).json({message:"Unauthorized"});
+        }
+        const {id}=jwt.verify(token,process.env.JWT_SECRET);
+        const user=await userModel.findById(id).populate('events_hosted -attendees -v -_id ');
+        res.json(user.events_hosted);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message:"Internal server error"});
+    }
+})
 module.exports=userRouter;
