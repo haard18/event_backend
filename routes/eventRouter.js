@@ -38,19 +38,19 @@ eventRouter.post('/createEvent', async (req, res) => {
             time,
             organization,
             hostedBy: userId?.id,
-            attendees,  // Provide attendees if any, otherwise it will default to empty array
+            attendees, 
             nfcUUID,
             approvalNeeded,
             poapURL
         });
 
-        // Get the newly created event's ID
+       
         const eventId = newEvent._id;
 
-        // Return a success response
+        
         return res.status(201).json({ message: 'Event created successfully', eventId });
     } catch (err) {
-        // Handle errors and return a server error response
+   
         res.status(500).json({ message: err.message });
     }
 });
